@@ -10,4 +10,6 @@ public interface PatientService {
     PatientDto setNewDto(PatientDto patientDto);
 
     void updatePatient(UUID patientId, PatientDto patientDto);
+
+    void deletePatient(UUID patientId);
 }

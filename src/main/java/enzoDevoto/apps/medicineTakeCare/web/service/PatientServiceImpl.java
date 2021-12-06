@@ -1,12 +1,14 @@
 package enzoDevoto.apps.medicineTakeCare.web.service;
 
 import enzoDevoto.apps.medicineTakeCare.web.model.PatientDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
+@Slf4j
 @Service
 public class PatientServiceImpl implements PatientService {
     @Override
@@ -34,4 +36,11 @@ public class PatientServiceImpl implements PatientService {
     public void updatePatient(UUID patientId, PatientDto patientDto) {
 
     }
+
+    @Override
+    public void deletePatient(UUID patientId) {
+        log.debug("Deleting a beer");
+    }
+
+
 }
