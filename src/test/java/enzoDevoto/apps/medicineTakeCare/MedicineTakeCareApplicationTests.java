@@ -33,7 +33,7 @@ class MedicineTakeCareApplicationTests {
 									.build();
 		//When
 		//then
-		assertEquals(, testPatient.getName());
+		assertEquals("Enzo", testPatient.getName());
 	}
 
 }

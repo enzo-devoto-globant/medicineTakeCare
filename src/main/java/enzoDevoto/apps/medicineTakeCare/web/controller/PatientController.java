@@ -2,6 +2,7 @@ package enzoDevoto.apps.medicineTakeCare.web.controller;
 
 import enzoDevoto.apps.medicineTakeCare.web.model.PatientDto;
 import enzoDevoto.apps.medicineTakeCare.web.service.PatientService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ import java.util.UUID;
 
 @RequestMapping("/api/v1/patients")
 @RestController
-
+@Slf4j
 public class PatientController {
     private final PatientService patientService;
 
@@ -28,6 +29,7 @@ public class PatientController {
 
     @GetMapping({"/{patientId}"})
     public ResponseEntity<PatientDto> getPatient(@PathVariable("patientId") UUID patientId){
+        log.info("Getting a patient by UUID: ");
             return new ResponseEntity<>(patientService.getPatientById(patientId), HttpStatus.OK);
     };
     @PostMapping
@@ -36,11 +38,12 @@ public class PatientController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/patients"+newPatientDto.getId().toString());
-
+        log.info("Creating a patient: ");
         return new ResponseEntity<>(headers,HttpStatus.OK);
     };
     @PutMapping({"/{patientId}"})
     public ResponseEntity<PatientDto> updatePatient(@PathVariable("patientId")UUID patientId, PatientDto patientDto){
+        log.info("Updating a patient by UUID: ");
         patientService.updatePatient(patientId, patientDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -48,6 +51,7 @@ public class PatientController {
     @DeleteMapping({"/{patientId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePatient(@PathVariable("patientId")UUID patientId){
+        log.info("Deleting a patient by UUID: ");
         patientService.deletePatient(patientId);
     }
 }
