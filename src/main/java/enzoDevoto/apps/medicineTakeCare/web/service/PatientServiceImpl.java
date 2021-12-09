@@ -1,30 +1,53 @@
 package enzoDevoto.apps.medicineTakeCare.web.service;
 
+import enzoDevoto.apps.medicineTakeCare.MedicineTakeCareApplication;
 import enzoDevoto.apps.medicineTakeCare.web.model.PatientDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
 @Service
 public class PatientServiceImpl implements PatientService {
     @Override
-    public PatientDto getPatientById(UUID patientId) {
+    public Map<String,PatientDto> getPatientById(UUID patientId) {
+        Map<String, PatientDto> patientsList = new HashMap<>();
         log.info("getting patient data: ");
-        return PatientDto.builder()
+
+
+        PatientDto myNewPatient = PatientDto.builder()
                 .id(UUID.randomUUID())//UUID.fromString(PatientDto.Fields.id)
-                .age(30)//Integer.parseInt(PatientDto.Fields.age))
-                .email("myEmail@goglaaa.clo")//PatientDto.Fields.email)
+                .age(19)//Integer.parseInt(PatientDto.Fields.age))
+                .email("stefanoDevoto@gmail.com")//PatientDto.Fields.email)
                 .gender("Male")//PatientDto.Fields.gender)
-                .name("Enzo Devoto")
+                .name("Stefano Devoto")
                 .timeOfEvaluation(Date.from(Instant.now()))
                 .isCritical(false)
-                .description("This is the dummy patient he comes and goes all the time, loves to suffer.")//PatientDto.Fields.name)
+                .description("Stefano dejo la motita.")//PatientDto.Fields.name)
                 .build();
 
+        PatientDto myNewPatient2 = PatientDto.builder()
+                .id(UUID.randomUUID())//UUID.fromString(PatientDto.Fields.id)
+                .age(19)//Integer.parseInt(PatientDto.Fields.age))
+                .email("stefanoDevoto@gmail.com")//PatientDto.Fields.email)
+                .gender("Male")//PatientDto.Fields.gender)
+                .name("Stefano Devoto")
+                .timeOfEvaluation(Date.from(Instant.now()))
+                .isCritical(false)
+                .description("Stefano dejo la motita.")//PatientDto.Fields.name)
+                .build();
+
+        patientsList.put("Patient:", myNewPatient);
+        patientsList.put("second Patient: ", myNewPatient2);
+
+        return patientsList;
 
     }
 

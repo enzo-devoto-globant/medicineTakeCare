@@ -16,5 +16,9 @@ abstract class User {
     private String gender;
     private int age;
     private String email;
+    private Long phoneNumber;
+
+
 public User(){}
+
 }

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RequestMapping("/api/v1/patients")
@@ -28,9 +30,10 @@ public class PatientController {
     }
 
     @GetMapping({"/{patientId}"})
-    public ResponseEntity<PatientDto> getPatient(@PathVariable("patientId") UUID patientId){
+    public Map<String,PatientDto> getPatient(@PathVariable("patientId") UUID patientId){
         log.info("Getting a patient by UUID: ");
-            return new ResponseEntity<>(patientService.getPatientById(patientId), HttpStatus.OK);
+        Map<String, PatientDto> newList = patientService.getPatientById(patientId);
+            return newList;
     };
     @PostMapping
     public ResponseEntity<PatientDto> postPatient(PatientDto patientDto){

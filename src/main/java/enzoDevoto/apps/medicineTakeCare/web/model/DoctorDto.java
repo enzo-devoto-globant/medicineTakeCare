@@ -15,5 +15,6 @@ public class DoctorDto extends User{
     private String speciality;
     private String description;
     private double rate;
+    private long price;
 
 }
