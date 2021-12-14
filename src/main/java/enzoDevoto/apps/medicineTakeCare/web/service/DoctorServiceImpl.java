@@ -24,4 +24,22 @@ public class DoctorServiceImpl implements DoctorService {
         log.info("Getting a Doctor by UUID: "+ newDoctor.toString());
         return newDoctor;
     }
+
+    @Override
+    public DoctorDto setNewDoctorDto(DoctorDto doctorDto) {
+        log.info("Creating doctor data: ");
+        return DoctorDto.builder()
+                .id(UUID.randomUUID())
+                .build();
+    }
+
+    @Override
+    public void updateDoctor(UUID doctorDtoId, DoctorDto doctorDto) {
+
+    }
+
+    @Override
+    public void deleteDoctor(UUID doctorDtoId) {
+
+    }
 }

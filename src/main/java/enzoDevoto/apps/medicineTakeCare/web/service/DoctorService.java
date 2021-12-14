@@ -6,4 +6,10 @@ import java.util.UUID;
 
 public interface DoctorService {
     DoctorDto getDoctorById(UUID doctorId);
+
+    DoctorDto setNewDoctorDto(DoctorDto doctorDto);
+
+    void updateDoctor(UUID doctorDtoId, DoctorDto doctorDto);
+
+    void deleteDoctor(UUID doctorDtoId);
 }

@@ -3,8 +3,6 @@ package enzoDevoto.apps.medicineTakeCare.web.controller;
 import enzoDevoto.apps.medicineTakeCare.web.model.PatientDto;
 import enzoDevoto.apps.medicineTakeCare.web.service.PatientService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,7 +42,6 @@ public class PatientController {
         return new ResponseEntity(HttpStatus.CREATED);
 
     };
-
 
     @PutMapping({"/updatePatient/{patientId}"})
     public ResponseEntity updatePatient(@PathVariable("patientId")UUID patientId, @RequestBody PatientDto patientDto){
