@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RequestMapping("/api/v1/patients")
@@ -30,22 +31,25 @@ public class PatientController {
     }
 
     @GetMapping({"/{patientId}"})
-    public ResponseEntity<PatientDto> getPatientById(@PathVariable("patientId") UUID patientId){
+    public List<ResponseEntity<PatientDto>> getPatientById(@PathVariable("patientId") UUID patientId){
         log.info("Getting a patient by UUID: ");
-        return new ResponseEntity<>(PatientDto.builder().build() ,HttpStatus.OK);
-    };
+        List<ResponseEntity<PatientDto>> patients = new ArrayList<>();
+        patients.add(new ResponseEntity<>(PatientDto.builder().build() ,HttpStatus.OK));
+        return patients;
+    }
 
     @PostMapping
-    public ResponseEntity postPatient(@RequestBody PatientDto patientDto){
-        PatientDto newPatientDto = patientService.setNewDto(patientDto);
-        log.info("Creating a patient: ");
-        return new ResponseEntity(HttpStatus.CREATED);
+    @ResponseStatus
+    public ResponseEntity saveNewPatient(@RequestBody PatientDto patientDto){
 
-    };
+        log.info("Creating new Patient: " + patientDto);
+        return new ResponseEntity<>(patientService.saveNewPatient(patientDto), HttpStatus.CREATED);
+
+    }
 
     @PutMapping({"/updatePatient/{patientId}"})
     public ResponseEntity updatePatient(@PathVariable("patientId")UUID patientId, @RequestBody PatientDto patientDto){
-        log.info("Updating a patient by UUID: ");
+        log.info("Updating a patient by UUID: " + patientId + " : " + patientDto);
         patientService.updatePatient(patientId, patientDto);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

@@ -18,7 +18,6 @@ abstract class User {
     private String email;
     private Long phoneNumber;
 
-
 public User(){}
 
 }

@@ -14,8 +14,8 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientDto getPatientById(UUID patientId) {
-
         log.info("getting patient data: ");
+
         return PatientDto.builder()
                 .id(UUID.randomUUID())//UUID.fromString(PatientDto.Fields.id)
                 .age(19)//Integer.parseInt(PatientDto.Fields.age))
@@ -24,17 +24,10 @@ public class PatientServiceImpl implements PatientService {
                 .name("Stefano Devoto")
                 .timeOfEvaluation(Date.from(Instant.now()))
                 .isCritical(false)
-                .description("Stefano dejo la motita.")//PatientDto.Fields.name)
+                .description("some dummy patient")//PatientDto.Fields.name)
                 .build();
     }
 
-    @Override
-    public PatientDto setNewDto(PatientDto patientDto) {
-        log.info("Creating patient data: ");
-        return PatientDto.builder()
-                .id(UUID.randomUUID())
-                .build();
-    }
 
     @Override
     public void updatePatient(UUID patientId, PatientDto patientDto) {
@@ -44,6 +37,14 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public void deletePatient(UUID patientId) {
         log.debug("Deleting a patient");
+    }
+
+    @Override
+    public PatientDto saveNewPatient(PatientDto patientDto) {
+        log.info("Creating patient data: ");
+        return PatientDto.builder()
+                .id(UUID.randomUUID())
+                .build();
     }
 
 
