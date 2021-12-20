@@ -59,7 +59,7 @@ public class PatientController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping({"/deletePatient/{patientId}"})
+    @DeleteMapping({"deletePatient/{patientId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePatient(@PathVariable("patientId")UUID patientId){
         log.info("Deleting a patient by UUID: ");
