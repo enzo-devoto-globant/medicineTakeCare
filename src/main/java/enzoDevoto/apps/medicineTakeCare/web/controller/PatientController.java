@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -29,18 +30,22 @@ public class PatientController {
     public PatientController(PatientService patientService) {
         this.patientService = patientService;
     }
-
-    @GetMapping({"/{patientId}"})
-    public List<ResponseEntity<PatientDto>> getPatientById(@PathVariable("patientId") UUID patientId){
-        log.info("Getting a patient by UUID: ");
+    @GetMapping()
+    public List<ResponseEntity<PatientDto>> getPatients(@PathVariable("patientId") UUID patientId){
+        log.info("Getting all patients: ");
         List<ResponseEntity<PatientDto>> patients = new ArrayList<>();
         patients.add(new ResponseEntity<>(PatientDto.builder().build() ,HttpStatus.OK));
         return patients;
     }
 
+    @GetMapping("/{patientId}")
+    public ResponseEntity<PatientDto> getPatientById(@PathVariable("patientId") UUID patientId){
+        log.info("Getting a patient by UUID: ");
+        return new ResponseEntity<>(patientService.getPatientById(patientId), HttpStatus.OK);
+    }
     @PostMapping
     @ResponseStatus
-    public ResponseEntity saveNewPatient(@RequestBody PatientDto patientDto){
+    public ResponseEntity saveNewPatient(@Valid @RequestBody PatientDto patientDto){
 
         log.info("Creating new Patient: " + patientDto);
         return new ResponseEntity<>(patientService.saveNewPatient(patientDto), HttpStatus.CREATED);
@@ -54,7 +59,7 @@ public class PatientController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping({"/deletePatient/{patientId}"})
+    @DeleteMapping({"deletePatient/{patientId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePatient(@PathVariable("patientId")UUID patientId){
         log.info("Deleting a patient by UUID: ");
