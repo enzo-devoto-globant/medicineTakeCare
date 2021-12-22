@@ -30,7 +30,7 @@ public class PatientController {
     public PatientController(PatientService patientService) {
         this.patientService = patientService;
     }
-    @GetMapping("/persons")
+    @GetMapping
     public List<ResponseEntity<PatientDto>> getPatients(@PathVariable("patientId") UUID patientId){
         log.info("Getting all patients: ");
         List<ResponseEntity<PatientDto>> patients = new ArrayList<>();
