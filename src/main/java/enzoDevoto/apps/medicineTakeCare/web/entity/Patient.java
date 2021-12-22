@@ -28,6 +28,7 @@ public class Patient  {
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
     ) private Long id;
+
     @Column(name = "patient", nullable = false)
    private String name;
     @Column(name = "description", nullable = false)
@@ -36,8 +37,6 @@ public class Patient  {
     private Date timeOfEvaluation;
     @Column(name = "isCritical", nullable = false)
     private boolean isCritical;
-
-
     @Column(name = "gender", nullable = false)
     private String gender;
     @Column(name = "age", nullable = false)
