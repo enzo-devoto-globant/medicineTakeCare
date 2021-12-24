@@ -6,6 +6,7 @@ import java.util.UUID;
 
 public interface PatientService {
 
+
     PatientDto getPatientById(UUID patientId);
 
     void updatePatient(UUID patientId, PatientDto patientDto);
