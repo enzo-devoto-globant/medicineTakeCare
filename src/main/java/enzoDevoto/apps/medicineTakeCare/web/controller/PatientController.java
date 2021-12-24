@@ -10,15 +10,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.UUID;
 
 @RequestMapping("/api/v1/patients")
 @RestController
@@ -30,9 +29,12 @@ public class PatientController {
     public PatientController(PatientService patientService) {
         this.patientService = patientService;
     }
-    @GetMapping
-    public List<PatientDto> getPatients(){
-      return patientService.getPatients();
+    @GetMapping()
+    public List<PatientDto> getPatients(
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
+    ){
+        return patientService.getPatients();
     }
 
     @GetMapping({"/{patientId}"})
@@ -40,12 +42,12 @@ public class PatientController {
         log.info("Getting a patient by UUID: ");
         return new ResponseEntity<>(patientService.getPatientById(patientId), HttpStatus.OK);
     }
-
     @PostMapping
     @ResponseStatus
     public ResponseEntity<PatientDto> saveNewPatient(@Valid @RequestBody PatientDto patientDto){
         log.info("Creating new Patient: " + patientDto);
         return new ResponseEntity<>(patientService.saveNewPatient(patientDto), HttpStatus.CREATED);
+
     }
 
     @PatchMapping({"/updatePatient/{patientId}"})
