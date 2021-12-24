@@ -2,15 +2,17 @@ package enzoDevoto.apps.medicineTakeCare.web.service;
 
 import enzoDevoto.apps.medicineTakeCare.web.model.PatientDto;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface PatientService {
+    List<PatientDto> getPatients();
 
-    PatientDto getPatientById(UUID patientId);
+    PatientDto getPatientById(Long patientId);
 
-    void updatePatient(UUID patientId, PatientDto patientDto);
+    PatientDto updatePatient(Long patientId, PatientDto patientDto);
 
-    void deletePatient(UUID patientId);
+    void deletePatient(Long patientId);
 
     PatientDto saveNewPatient(PatientDto patientDto);
 }
