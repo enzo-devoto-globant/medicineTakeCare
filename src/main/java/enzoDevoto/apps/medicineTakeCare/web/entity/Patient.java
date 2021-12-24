@@ -33,7 +33,7 @@ public class Patient  {
    private String name;
     @Column(name = "description", nullable = false)
     private String description;
-    @Column(name = "timeOfEvaluation", nullable = false)
+    @Column(name = "timeOfEvaluation")
     private Date timeOfEvaluation;
     @Column(name = "isCritical", nullable = false)
     private boolean isCritical;
