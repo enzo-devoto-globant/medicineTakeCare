@@ -1,17 +1,20 @@
 package enzoDevoto.apps.medicineTakeCare.web.service;
 
 import enzoDevoto.apps.medicineTakeCare.web.model.PatientDto;
+import enzoDevoto.apps.medicineTakeCare.web.model.PatientResponse;
+import org.springframework.http.ResponseEntity;
 
-import java.util.UUID;
+import java.util.List;
 
 public interface PatientService {
 
+    PatientResponse getPatients(int pageNo, int pageSize);
 
-    PatientDto getPatientById(UUID patientId);
+    ResponseEntity<PatientDto> getPatientById(Long patientId);
 
-    void updatePatient(UUID patientId, PatientDto patientDto);
+    PatientDto updatePatient(Long patientId, PatientDto patientDto);
 
-    void deletePatient(UUID patientId);
+    void deletePatient(Long patientId);
 
     PatientDto saveNewPatient(PatientDto patientDto);
 }

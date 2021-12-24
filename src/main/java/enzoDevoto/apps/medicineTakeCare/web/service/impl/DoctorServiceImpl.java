@@ -1,6 +1,7 @@
-package enzoDevoto.apps.medicineTakeCare.web.service;
+package enzoDevoto.apps.medicineTakeCare.web.service.impl;
 
 import enzoDevoto.apps.medicineTakeCare.web.model.DoctorDto;
+import enzoDevoto.apps.medicineTakeCare.web.service.DoctorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public DoctorDto getDoctorById(UUID doctorId) {
 
-        DoctorDto newDoctor = DoctorDto.builder().id(UUID.randomUUID())
+        DoctorDto newDoctor = DoctorDto.builder().id(Long.getLong(String.valueOf(Math.random())))
                 .name("Ruben Donoso")
                 .age(50)
                 .description("Adummy doctor with years of expereicience and degreews in medical stuff.")
@@ -29,7 +30,7 @@ public class DoctorServiceImpl implements DoctorService {
     public DoctorDto setNewDoctorDto(DoctorDto doctorDto) {
         log.info("Creating doctor data: ");
         return DoctorDto.builder()
-                .id(UUID.randomUUID())
+                .id(Long.getLong(String.valueOf(Math.random())))
                 .build();
     }
 
