@@ -1,8 +1,10 @@
 package enzoDevoto.apps.medicineTakeCare.web.controller;
 
+import enzoDevoto.apps.medicineTakeCare.web.entity.Patient;
 import enzoDevoto.apps.medicineTakeCare.web.model.PatientDto;
 import enzoDevoto.apps.medicineTakeCare.web.model.PatientResponse;
 import enzoDevoto.apps.medicineTakeCare.web.service.PatientService;
+import enzoDevoto.apps.medicineTakeCare.web.utils.PatientConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.List;
+
 
 @RequestMapping("/api/v1/patients")
 @RestController
@@ -33,17 +35,20 @@ public class PatientController {
     }
     @GetMapping()
     public PatientResponse getPatients(
-            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
+            @RequestParam(value = "pageNo", defaultValue = PatientConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = PatientConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = PatientConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = PatientConstants.DEFAULT_SORT_DIRECCION, required = false) String sortDir
     ){
-        return patientService.getPatients(pageNumber,pageSize);
+        return patientService.getPatients(pageNumber,pageSize, sortBy, sortDir);
     }
 
     @GetMapping({"/{patientId}"})
-    public ResponseEntity<PatientDto> getPatientById(@PathVariable("patientId") Long patientId){
+    public PatientResponse getPatientById(@PathVariable("patientId") Long patientId){
         log.info("Getting a patient by UUID: ");
-        return new ResponseEntity<PatientDto>((MultiValueMap<String, String>) patientService.getPatientById(patientId), HttpStatus.OK);
+        return patientService.getPatientById(patientId);
     }
+
     @PostMapping
     @ResponseStatus
     public ResponseEntity<PatientDto> saveNewPatient(@Valid @RequestBody PatientDto patientDto){

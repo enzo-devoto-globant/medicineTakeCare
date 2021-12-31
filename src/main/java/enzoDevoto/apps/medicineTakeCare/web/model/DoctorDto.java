@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @Data
 @SuperBuilder
 @NoArgsConstructor
@@ -16,5 +18,6 @@ public class DoctorDto extends User{
     private String description;
     private double rate;
     private long price;
+    private String myPatients;
 
 }

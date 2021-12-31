@@ -30,7 +30,7 @@ class DoctorControllerTest {
 
     @Test
     void getDoctor() throws Exception {
-        mockMvc.perform(get("/api/v1/doctors/"+ UUID.randomUUID()).accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/v1/doctors/"+ 1).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 

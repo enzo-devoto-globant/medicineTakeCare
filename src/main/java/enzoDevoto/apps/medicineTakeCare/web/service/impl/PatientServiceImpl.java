@@ -7,50 +7,63 @@ import enzoDevoto.apps.medicineTakeCare.web.model.PatientResponse;
 import enzoDevoto.apps.medicineTakeCare.web.repository.PatientRepository;
 import enzoDevoto.apps.medicineTakeCare.web.service.PatientService;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @Slf4j
 @Service
 public class PatientServiceImpl implements PatientService {
 
+    private ModelMapper modelMapper;
+
     private PatientRepository patientRepository;
 
-    public PatientServiceImpl(PatientRepository patientRepository) {
+    public PatientServiceImpl(PatientRepository patientRepository, ModelMapper modelMapper) {
         this.patientRepository = patientRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
-    public PatientResponse getPatients(int pageNo,int pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+    public PatientResponse getPatients(int pageNo, int pageSize, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        // create Pageable instance
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+
         Page<Patient> patients = patientRepository.findAll(pageable);
-
-        //get content for page object.
+        // get content for page object
         List<Patient> listOfPatients = patients.getContent();
-        List<PatientDto> content = listOfPatients.stream().map(patient -> mapToDto(patient)).collect(Collectors.toList());
-        PatientResponse patientResponse = new PatientResponse();
-        patientResponse.setContent(content);
-        patientResponse.setPageNo(patients.getNumber());
-        patientResponse.setPageSize(patients.getSize());
-        patientResponse.setTotalElements(patients.getTotalElements());
-        patientResponse.setTotalPages(patients.getTotalPages());
-        patientResponse.setLast(patients.isLast());
 
-        return patientResponse;
+       List<PatientDto> content = listOfPatients.stream().map(patient -> mapToDto(patient)).collect(Collectors.toList());
+
+        PatientResponse patientDto = new Patient();
+        patientDto.setContent(content);
+        patientDto.setLast(patients.isLast());
+        patientDto.setTotalPages(patients.getTotalPages());
+        patientDto.setPageSize(patients.getSize());
+        patientDto.setPageNo(patients.getNumber());
+        patientDto.setTotalElements(patients.getTotalElements());
+
+        return modelMapper.map(patientDto, (Type) Patient.class);
+
+
     }
 
     @Override
-    public ResponseEntity<PatientDto> getPatientById(Long patientId) {
+    public PatientResponse getPatientById(Long patientId) {
         log.info("getting patient data: ");
-        Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new ResourceNotFoundException("post", "id", patientId));
-        return ResponseEntity.ok(mapToDto(patient));
+        Patient patients =  patientRepository.findById(patientId).orElseThrow(
+                () -> new ResourceNotFoundException("post", "id", patientId)
+        );
+        return modelMapper.map(patients, (Type) Patient.class);
     }
 
 
@@ -67,6 +80,7 @@ public class PatientServiceImpl implements PatientService {
         patient.setAge(patientDto.getAge());
         patient.setName(patientDto.getName());
         patient.setTimeOfEvaluation(patientDto.getTimeOfEvaluation());
+        patient.setMyDoctor(String.valueOf(patientDto.getMyDoctor()));
         Patient updatedPatient = patientRepository.save(patient);
         return mapToDto(updatedPatient);
     }
@@ -89,32 +103,13 @@ public class PatientServiceImpl implements PatientService {
     }
 
     private PatientDto mapToDto(Patient patient) {
-        PatientDto patientResponse = new PatientDto();
-        patientResponse.setName(patient.getName());
-        patientResponse.setCritical(patient.isCritical());
-        patientResponse.setAge(patient.getAge());
-        patientResponse.setEmail(patient.getEmail());
-        patientResponse.setTimeOfEvaluation(patient.getTimeOfEvaluation());
-        patientResponse.setDescription(patient.getDescription());
-        patientResponse.setGender(patient.getGender());
-        patientResponse.setPhoneNumber(patient.getPhoneNumber());
-        patientResponse.setId(patient.getId());
-        patientResponse.setAddress(patient.getAddress());
-        return patientResponse;
+        PatientDto patientDto = modelMapper.map(patient, PatientDto.class);
+        return patientDto;
     }
 
     private Patient mapToEntity(PatientDto patientDto) {
-        Patient patient = new Patient();
-        patient.setName(patientDto.getName());
-        patient.setAge(patientDto.getAge());
-        patient.setCritical(patientDto.isCritical());
-        patient.setDescription(patientDto.getDescription());
-        patient.setEmail(patientDto.getEmail());
-        patient.setGender(patientDto.getGender());
-        patient.setPhoneNumber(patientDto.getPhoneNumber());
-        patient.setTimeOfEvaluation(patientDto.getTimeOfEvaluation());
-        patient.setAddress(patientDto.getAddress());
-
+        Patient patient = modelMapper.map(patientDto, Patient.class);
         return patient;
     }
+
 }
