@@ -1,9 +1,9 @@
 package enzoDevoto.apps.medicineTakeCare.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import enzoDevoto.apps.medicineTakeCare.web.exception.MedicineTakeCareAPIException;
 import enzoDevoto.apps.medicineTakeCare.web.exception.ResourceNotFoundException;
 import enzoDevoto.apps.medicineTakeCare.web.model.PatientDto;
-import enzoDevoto.apps.medicineTakeCare.web.model.PatientResponse;
 import enzoDevoto.apps.medicineTakeCare.web.service.PatientService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -13,14 +13,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyDouble;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -83,25 +78,67 @@ class PatientControllerTest {
     @Test
     void should_ThrowStatusIsCreated_When_CreateAPatient_Making_PostRequest_ToUrl() throws Exception {
         //given
-        PatientDto patientDto = PatientDto.builder().build();
+        PatientDto patientDto = PatientDto.builder().id(0L).email("someEmail@dfdfaf.com").phoneNumber("99933393921").build();
         String patientDtoToJson = objectMapper.writeValueAsString(patientDto);
 
-        mockMvc.perform(post("/api/v1/patients/")
+        mockMvc.perform(post("/api/v1/patients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(patientDtoToJson))
                         .andExpect(status().isCreated());
+
 
     }
 
     @Test
     void updatePatient() throws Exception {
-        PatientDto patientDto = PatientDto.builder().build();
+        PatientDto patientDto = PatientDto.builder().id(0L).email("someEmail@dfdfaf.com").phoneNumber("99933393921").build();
         String patientDtoToJson = objectMapper.writeValueAsString(patientDto);
-
-        mockMvc.perform(patch("/api/v1/patients/updatePatient/"+1)
+        mockMvc.perform(patch("/api/v1/patients/updatePatient/"+"1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(patientDtoToJson))
                 .andExpect(status().isNoContent());
+
+    }
+
+    @Test
+    void should_ThrowException_When_EmailIsNotValid() throws Exception {
+        PatientDto patientDto = PatientDto.builder().email("!2323@*sd+,com").build();
+        String patientDtoToJson = objectMapper.writeValueAsString(patientDto);
+        mockMvc.perform(get("/api/v1/patients/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(patientDtoToJson))
+                .andExpect(status().isOk());
+        when(this.patientService.getPatientById(patientDto.getId())).thenThrow(MedicineTakeCareAPIException.class);
+
+        Executable executable =()-> patientService.getPatientById(patientDto.getId())
+                .getContent()
+                .stream()
+                .map(patientProperties -> patientProperties.getEmail());
+
+        assertThrows(MedicineTakeCareAPIException.class, executable);
+
+
+    }
+    @Test
+    void should_ThrowException_When_EmailIsNull() throws Exception {
+
+        PatientDto patientDto = PatientDto.builder().email(null).build();
+        String patientDtoToJson = objectMapper.writeValueAsString(patientDto);
+
+        mockMvc.perform(get("/api/v1/patients/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(patientDtoToJson))
+                .andExpect(status().isOk());
+
+        when(this.patientService.getPatientById(patientDto.getId()))
+                .thenThrow(MedicineTakeCareAPIException.class);
+
+        Executable executable =()-> patientService.getPatientById(patientDto.getId())
+                .getContent()
+                .stream()
+                .map(patientProperties ->patientProperties.getEmail());
+
+        assertThrows(MedicineTakeCareAPIException.class, executable);
 
     }
 }
