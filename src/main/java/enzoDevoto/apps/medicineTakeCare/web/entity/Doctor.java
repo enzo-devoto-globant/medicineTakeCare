@@ -1,27 +1,22 @@
 package enzoDevoto.apps.medicineTakeCare.web.entity;
 
-
-import enzoDevoto.apps.medicineTakeCare.web.model.DoctorDto;
-import enzoDevoto.apps.medicineTakeCare.web.model.PatientResponse;
+import enzoDevoto.apps.medicineTakeCare.web.model.DoctorResponse;
+import enzoDevoto.apps.medicineTakeCare.web.model.PatientDto;
+import enzoDevoto.apps.medicineTakeCare.web.repository.DoctorRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import java.util.Date;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -29,22 +24,24 @@ import java.util.Set;
 
 @Entity
 @Table(
-        name = "patients", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})}
+        name = "doctors", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})}
 )
-public class Patient extends PatientResponse {
+public class Doctor extends DoctorResponse {
     @Id
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
     ) private Long id;
 
-    @Column(name = "patient", nullable = false)
-   private String name;
+    @Column(name = "speciality", nullable = false)
+    private String speciality;
     @Column(name = "description", nullable = false)
     private String description;
-    @Column(name = "timeOfEvaluation")
-    private Date timeOfEvaluation;
-    @Column(name = "isCritical", nullable = false)
-    private boolean isCritical;
+    @Column(name = "rate", nullable = false)
+    private Double rate;
+    @Column(name = "price", nullable = false)
+    private Long price;
+    @Column(name = "doctor", nullable = false)
+    private String name;
     @Column(name = "gender", nullable = false)
     private String gender;
     @Column(name = "age", nullable = false)
@@ -55,7 +52,7 @@ public class Patient extends PatientResponse {
     private Long phoneNumber;
     @Column(name = "address", nullable = false)
     private String address;
-    @Column(name = "myDoctor", nullable = false)
-    private String myDoctor;
+    @Column(name= "patients", nullable = false)
+    private String myPatients;
 
 }

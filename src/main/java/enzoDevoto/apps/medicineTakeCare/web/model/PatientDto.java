@@ -16,6 +16,7 @@ public class PatientDto extends User{
     private String description;
     private Date timeOfEvaluation;
     private boolean isCritical;
+    private DoctorDto myDoctor;
 
 }
 

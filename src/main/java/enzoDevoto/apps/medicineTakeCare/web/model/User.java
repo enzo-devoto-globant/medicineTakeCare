@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
-import java.util.UUID;
+
 @Data
 @SuperBuilder
 @FieldNameConstants
