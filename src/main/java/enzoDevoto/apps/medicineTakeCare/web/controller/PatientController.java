@@ -44,21 +44,21 @@ public class PatientController {
     }
 
     @GetMapping({"/{patientId}"})
-    public PatientResponse getPatientById(@PathVariable("patientId") Long patientId){
+    public PatientResponse getPatientById (@PathVariable("patientId") Long patientId){
         log.info("Getting a patient by UUID: ");
         return patientService.getPatientById(patientId);
     }
 
     @PostMapping
     @ResponseStatus
-    public ResponseEntity<PatientDto> saveNewPatient(@Valid @RequestBody PatientDto patientDto){
+    public ResponseEntity<PatientDto> saveNewPatient (@Valid @RequestBody PatientDto patientDto){
         log.info("Creating new Patient: " + patientDto);
         return new ResponseEntity<>(patientService.saveNewPatient(patientDto), HttpStatus.CREATED);
 
     }
 
     @PatchMapping({"/updatePatient/{patientId}"})
-    public ResponseEntity updatePatient(@PathVariable("patientId")Long patientId, @RequestBody PatientDto patientDto){
+    public ResponseEntity updatePatient (@PathVariable("patientId")Long patientId,@Valid @RequestBody PatientDto patientDto){
         log.info("Updating a patient by id: " + patientId + " : " + patientDto);
         patientService.updatePatient(patientId, patientDto);
         return new ResponseEntity(HttpStatus.NO_CONTENT);

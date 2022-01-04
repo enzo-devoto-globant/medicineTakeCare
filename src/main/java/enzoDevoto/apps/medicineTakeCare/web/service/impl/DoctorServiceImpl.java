@@ -80,7 +80,7 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.setAddress(doctorDto.getAddress());
         doctor.setId(doctorDto.getId());
         doctor.setGender(doctorDto.getGender());
-        doctor.setPhoneNumber(doctorDto.getPhoneNumber());
+        doctor.setPhoneNumber(Long.valueOf(doctorDto.getPhoneNumber()));
         doctor.setEmail(doctorDto.getEmail());
         doctor.setDescription(doctorDto.getDescription());
         doctor.setPrice(doctorDto.getPrice());
