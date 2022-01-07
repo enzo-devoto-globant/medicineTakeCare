@@ -15,6 +15,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -55,7 +58,13 @@ public class Patient extends PatientResponse {
     private Long phoneNumber;
     @Column(name = "address", nullable = false)
     private String address;
-    @Column(name = "myDoctor", nullable = false)
-    private String myDoctor;
+    @Column(name= "username", nullable = false)
+    private String username;
+    @Column(name= "password", nullable = false)
+    private String password;
 
+ @ManyToMany(fetch = FetchType.EAGER)
+ @JoinTable(name = "my_doctors",
+         joinColumns = @JoinColumn(name = "doctor_id", referencedColumnName = "id"))
+ private Set<Doctor> myDoctors;
 }

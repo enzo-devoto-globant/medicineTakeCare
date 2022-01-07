@@ -72,15 +72,16 @@ public class PatientServiceImpl implements PatientService {
         Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new ResourceNotFoundException("post", "id", patientId));
         patient.setAddress(patient.getAddress());
         patient.setId(patientDto.getId());
+        patient.setPassword(patientDto.getPassword());
+        patient.setUsername(patientDto.getUsername());
         patient.setGender(patientDto.getGender());
-        patient.setPhoneNumber(patientDto.getPhoneNumber());
+        patient.setPhoneNumber(Long.valueOf(patientDto.getPhoneNumber()));
         patient.setEmail(patientDto.getEmail());
         patient.setDescription(patientDto.getDescription());
         patient.setCritical(patientDto.isCritical());
         patient.setAge(patientDto.getAge());
         patient.setName(patientDto.getName());
         patient.setTimeOfEvaluation(patientDto.getTimeOfEvaluation());
-        patient.setMyDoctor(String.valueOf(patientDto.getMyDoctor()));
         Patient updatedPatient = patientRepository.save(patient);
         return mapToDto(updatedPatient);
     }

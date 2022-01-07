@@ -8,6 +8,7 @@ import enzoDevoto.apps.medicineTakeCare.web.utils.PatientConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,6 +52,7 @@ public class PatientController {
 
     @PostMapping
     @ResponseStatus
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PatientDto> saveNewPatient(@Valid @RequestBody PatientDto patientDto){
         log.info("Creating new Patient: " + patientDto);
         return new ResponseEntity<>(patientService.saveNewPatient(patientDto), HttpStatus.CREATED);
@@ -58,7 +60,8 @@ public class PatientController {
     }
 
     @PatchMapping({"/updatePatient/{patientId}"})
-    public ResponseEntity updatePatient(@PathVariable("patientId")Long patientId, @RequestBody PatientDto patientDto){
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity updatePatient(@PathVariable("patientId")Long patientId,@Valid  @RequestBody PatientDto patientDto){
         log.info("Updating a patient by id: " + patientId + " : " + patientDto);
         patientService.updatePatient(patientId, patientDto);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -66,6 +69,7 @@ public class PatientController {
 
     @DeleteMapping({"/deletePatient/{patientId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
     public void deletePatient(@PathVariable("patientId")Long patientId){
         log.info("Deleting a patient by UUID: ");
         patientService.deletePatient(patientId);
