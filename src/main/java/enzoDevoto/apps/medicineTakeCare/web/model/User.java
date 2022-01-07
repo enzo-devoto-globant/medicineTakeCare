@@ -10,9 +10,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
+import javax.validation.constraints.NotBlank;
+
 
 
 @Data
@@ -20,12 +19,23 @@ import java.time.temporal.ChronoUnit;
 @FieldNameConstants
 
 abstract class User {
+
     @NumberFormat
     @NotNull
     private Long id;
 
     private String name;
+    private String secondName;
     private String gender;
+
+
+    @NotNull
+    @NotBlank
+    private String password;
+
+    @NotNull
+    @NotBlank
+    private String username;
 
     @NumberFormat
     @NotNull

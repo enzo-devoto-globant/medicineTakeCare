@@ -4,7 +4,6 @@ import enzoDevoto.apps.medicineTakeCare.web.entity.Doctor;
 import enzoDevoto.apps.medicineTakeCare.web.exception.ResourceNotFoundException;
 import enzoDevoto.apps.medicineTakeCare.web.model.DoctorDto;
 import enzoDevoto.apps.medicineTakeCare.web.model.DoctorResponse;
-import enzoDevoto.apps.medicineTakeCare.web.model.PatientDto;
 import enzoDevoto.apps.medicineTakeCare.web.repository.DoctorRepository;
 import enzoDevoto.apps.medicineTakeCare.web.service.DoctorService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,11 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,15 +34,10 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public DoctorResponse getDoctors(int pageNo, int pageSize, String sortBy, String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())? Sort.by(sortBy).ascending()  : Sort.by(sortBy).descending();
-
         Pageable pageable = PageRequest.of(pageNo,pageSize, sort);
-
         Page<Doctor> doctors = doctorRepository.findAll(pageable);
-
         List<Doctor> listOfDoctors = doctors.getContent();
-
         List<DoctorDto> content = listOfDoctors.stream().map(doctor -> mapToDto(doctor)).collect(Collectors.toList());
-
         DoctorResponse doctorResponse = new Doctor();
         doctorResponse.setContent(content);
         doctorResponse.setLast(doctors.isLast());
@@ -54,7 +46,6 @@ public class DoctorServiceImpl implements DoctorService {
         doctorResponse.setPageNo(doctors.getNumber());
         doctorResponse.setTotalElements(doctors.getTotalElements());
         return modelMapper.map(doctorResponse, (Type) Doctor.class);
-
     }
 
     @Override
@@ -79,6 +70,8 @@ public class DoctorServiceImpl implements DoctorService {
         Doctor doctor = doctorRepository.findById(doctorDtoId).orElseThrow(() -> new ResourceNotFoundException("post", "id", doctorDtoId));
         doctor.setAddress(doctorDto.getAddress());
         doctor.setId(doctorDto.getId());
+        doctor.setUsername(doctorDto.getUsername());
+        doctor.setPassword(doctorDto.getPassword());
         doctor.setGender(doctorDto.getGender());
         doctor.setPhoneNumber(Long.valueOf(doctorDto.getPhoneNumber()));
         doctor.setEmail(doctorDto.getEmail());
