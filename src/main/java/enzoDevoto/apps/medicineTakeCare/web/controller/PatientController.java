@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 
 
 @RequestMapping("/api/v1/patients")
@@ -42,29 +43,33 @@ public class PatientController {
     }
 
     @GetMapping({"/{patientId}"})
+    @ResponseStatus(HttpStatus.OK)
     public PatientResponse getPatientById (@PathVariable("patientId") Long patientId){
         log.info("Getting a patient by UUID: ");
         return patientService.getPatientById(patientId);
     }
 
     @PostMapping
-    @ResponseStatus
-    public ResponseEntity<PatientDto> saveNewPatient(@RequestBody PatientDto patientDto){
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<PatientDto> saveNewPatient(@RequestBody @Valid PatientDto patientDto){
         log.info("Creating new Patient: " + patientDto);
         return new ResponseEntity<>(patientService.saveNewPatient(patientDto), HttpStatus.CREATED);
 
     }
 
     @PatchMapping({"/updatePatient/{patientId}"})
-    public ResponseEntity updatePatient(@PathVariable("patientId")Long patientId, @RequestBody PatientDto patientDto){
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ResponseEntity updatePatient(@PathVariable("patientId")Long patientId, @RequestBody @Valid PatientDto patientDto){
         log.info("Updating a patient by id: " + patientId + " : " + patientDto);
         patientService.updatePatient(patientId, patientDto);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping({"/deletePatient/{patientId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deletePatient(@PathVariable("patientId")Long patientId){
         log.info("Deleting a patient by UUID: ");
         patientService.deletePatient(patientId);
