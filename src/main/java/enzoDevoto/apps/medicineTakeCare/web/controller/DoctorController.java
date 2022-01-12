@@ -7,7 +7,6 @@ import enzoDevoto.apps.medicineTakeCare.web.utils.PatientConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 
 @RequestMapping("/api/v1/doctors")
 @RestController
@@ -49,16 +47,14 @@ public class DoctorController {
     }
     @PostMapping
     @ResponseStatus
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<DoctorDto> saveNewDoctor(@Valid @RequestBody DoctorDto doctorDto){
+    public ResponseEntity<DoctorDto> saveNewDoctor(@RequestBody DoctorDto doctorDto){
         log.info("Creating new doctor: " + doctorDto);
         return new ResponseEntity<>(doctorService.setNewDoctorDto(doctorDto), HttpStatus.CREATED);
 
     }
 
     @PatchMapping({"/updateDoctor/{doctorId}"})
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity updateDoctor(@PathVariable("doctorId")Long doctorId,@Valid  @RequestBody DoctorDto doctorDto){
+    public ResponseEntity updateDoctor(@PathVariable("doctorId")Long doctorId, @RequestBody DoctorDto doctorDto){
         log.info("Updating a doctor by id: " + doctorId + " : " + doctorDto);
         doctorService.updateDoctor(doctorId, doctorDto);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -66,7 +62,6 @@ public class DoctorController {
 
     @DeleteMapping({"/deleteDoctor/{doctorId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN')")
     public void deleteDoctor(@PathVariable("doctorId")Long doctorId){
         log.info("Deleting a doctor by ID: ");
         doctorService.deleteDoctor(doctorId);
