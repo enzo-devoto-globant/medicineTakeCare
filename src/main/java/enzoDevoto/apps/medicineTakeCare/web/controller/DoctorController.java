@@ -42,35 +42,32 @@ public class DoctorController {
     ){
         return doctorService.getDoctors(pageNumber,pageSize, sortBy, sortDir);
     }
-
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @GetMapping({"/{doctorId}"})
     @ResponseStatus(HttpStatus.OK)
     public DoctorResponse getDoctorById(@PathVariable("doctorId") Long doctorId){
         log.info("Getting a doctor by ID: ");
         return doctorService.getDoctorById(doctorId);
     }
-
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<DoctorDto> saveNewDoctor(@RequestBody @Valid DoctorDto doctorDto){
+    public ResponseEntity<DoctorDto> saveNewDoctor(@Valid @RequestBody  DoctorDto doctorDto){
         log.info("Creating new doctor: " + doctorDto);
         return new ResponseEntity<>(doctorService.setNewDoctorDto(doctorDto), HttpStatus.CREATED);
 
     }
-
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @PatchMapping({"/updateDoctor/{doctorId}"})
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity updateDoctor(@PathVariable("doctorId")Long doctorId, @RequestBody @Valid DoctorDto doctorDto){
+    public ResponseEntity updateDoctor(@PathVariable("doctorId")Long doctorId, @Valid @RequestBody DoctorDto doctorDto){
         log.info("Updating a doctor by id: " + doctorId + " : " + doctorDto);
         doctorService.updateDoctor(doctorId, doctorDto);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
-
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @DeleteMapping({"/deleteDoctor/{doctorId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteDoctor(@PathVariable("doctorId")Long doctorId){
         log.info("Deleting a doctor by ID: ");
         doctorService.deleteDoctor(doctorId);
