@@ -33,6 +33,7 @@ public class PatientController {
         this.patientService = patientService;
     }
     @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
     public PatientResponse getPatients(
             @RequestParam(value = "pageNo", defaultValue = PatientConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = PatientConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
@@ -41,35 +42,32 @@ public class PatientController {
     ){
         return patientService.getPatients(pageNumber,pageSize, sortBy, sortDir);
     }
-
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @GetMapping({"/{patientId}"})
     @ResponseStatus(HttpStatus.OK)
     public PatientResponse getPatientById (@PathVariable("patientId") Long patientId){
         log.info("Getting a patient by UUID: ");
         return patientService.getPatientById(patientId);
     }
-
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<PatientDto> saveNewPatient(@RequestBody @Valid PatientDto patientDto){
+    public ResponseEntity<PatientDto> saveNewPatient(@Valid @RequestBody  PatientDto patientDto){
         log.info("Creating new Patient: " + patientDto);
         return new ResponseEntity<>(patientService.saveNewPatient(patientDto), HttpStatus.CREATED);
 
     }
-
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @PatchMapping({"/updatePatient/{patientId}"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity updatePatient(@PathVariable("patientId")Long patientId, @RequestBody @Valid PatientDto patientDto){
+    public ResponseEntity updatePatient(@PathVariable("patientId")Long patientId,@Valid @RequestBody  PatientDto patientDto){
         log.info("Updating a patient by id: " + patientId + " : " + patientDto);
         patientService.updatePatient(patientId, patientDto);
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
-
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @DeleteMapping({"/deletePatient/{patientId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deletePatient(@PathVariable("patientId")Long patientId){
         log.info("Deleting a patient by UUID: ");
         patientService.deletePatient(patientId);

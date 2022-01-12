@@ -19,6 +19,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.util.Set;
@@ -29,7 +30,9 @@ import java.util.Set;
 
 @Entity
 @Table(
-        name = "doctors", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})}
+        name = "doctors", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"}),
+@UniqueConstraint(columnNames = {"username"}),
+@UniqueConstraint(columnNames = {"email"})}
 )
 public class Doctor extends DoctorResponse {
     @Id
@@ -62,9 +65,10 @@ public class Doctor extends DoctorResponse {
     @Column(name= "password", nullable = false)
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "my_patients",
-    joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"))
-    private Set<Patient> myPatients;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "doctor_roles",
+    joinColumns = @JoinColumn(name = "doctor_id", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles;
 
 }
