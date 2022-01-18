@@ -20,17 +20,19 @@ import java.util.Date;
 
 @Slf4j
 @Component
-public class JWTTokenProvider {
+public class JwtTokenProvider {
 
     @Value("app.jwt-secret")
     private String jwtSecret;
     @Value("app.jwt-expiration-milliseconds")
-    private int jwtExpirationDateInMs;
+    private String jwtExpirationDateInMs;
 
     public String generateToken(Authentication authentication) {
+
         String username = authentication.getName();
         Date currentDate = new Date();
-        Date expireDate = new Date(currentDate.getTime() + jwtExpirationDateInMs);
+        Date expireDate = new Date(currentDate.getTime() + Integer.valueOf(jwtExpirationDateInMs));
+
         //Generate token
         String token = Jwts.builder()
                 .setSubject(username)
@@ -41,8 +43,9 @@ public class JWTTokenProvider {
 
         log.info("token generated.");
         return token;
+
     }
-        public String getUsernameforJWT(String token){
+        public String getUsernameForJWT(String token){
             Claims claims = Jwts.parser()
                     .setSigningKey(jwtSecret)
                     .parseClaimsJws(token)

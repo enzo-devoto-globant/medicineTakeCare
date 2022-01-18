@@ -1,7 +1,7 @@
 package enzoDevoto.apps.medicineTakeCare.web.config;
 
 import enzoDevoto.apps.medicineTakeCare.web.security.CustomDoctorDetailsService;
-import enzoDevoto.apps.medicineTakeCare.web.security.JWtAuthenticationEntryPoint;
+import enzoDevoto.apps.medicineTakeCare.web.security.JwtAuthenticationEntryPoint;
 import enzoDevoto.apps.medicineTakeCare.web.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomDoctorDetailsService customDoctorDetailsService;
 
     @Autowired
-    private JWtAuthenticationEntryPoint authenticationEntryPoint;
+    private JwtAuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter(){
@@ -47,8 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "api/**").permitAll()
-                .antMatchers("api/auth/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/**").permitAll()
+                .antMatchers("/api/auth/**").permitAll()
                 .anyRequest()
                 .authenticated();
 
@@ -60,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
         auth
+                .parentAuthenticationManager(authenticationManagerBean())
                 .userDetailsService(customDoctorDetailsService)
                 .passwordEncoder(passwordEncoder());
 

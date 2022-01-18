@@ -30,10 +30,10 @@ public class CustomDoctorDetailsService implements UserDetailsService {
         Doctor doctor = doctorRepository.findByUsernameOrEmail(usernameOrEmail,usernameOrEmail).orElseThrow(
                 () -> new UsernameNotFoundException("Username or email not found for: " + usernameOrEmail)
         );
-        return new User(doctor.getEmail(), doctor.getPassword(), mapRolesforDoctors(doctor.getRoles()));
+        return new User(doctor.getEmail(), doctor.getPassword(), mapRolesForDoctors(doctor.getRoles()));
     }
 
-    private Collection<? extends GrantedAuthority> mapRolesforDoctors(Set<Role> roles){
+    private Collection<? extends GrantedAuthority> mapRolesForDoctors(Set<Role> roles){
      return roles.stream().map(
              role -> new SimpleGrantedAuthority(role.getName())
      ).collect(Collectors.toList());
