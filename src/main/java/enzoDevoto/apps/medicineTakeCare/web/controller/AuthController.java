@@ -2,10 +2,12 @@ package enzoDevoto.apps.medicineTakeCare.web.controller;
 
 import enzoDevoto.apps.medicineTakeCare.web.entity.Doctor;
 import enzoDevoto.apps.medicineTakeCare.web.entity.Role;
+import enzoDevoto.apps.medicineTakeCare.web.model.JWTAuthResponse;
 import enzoDevoto.apps.medicineTakeCare.web.model.LoginDto;
 import enzoDevoto.apps.medicineTakeCare.web.model.SignUpDto;
 import enzoDevoto.apps.medicineTakeCare.web.repository.DoctorRepository;
 import enzoDevoto.apps.medicineTakeCare.web.repository.RoleRepository;
+import enzoDevoto.apps.medicineTakeCare.web.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,15 +35,19 @@ public class AuthController {
     private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private JwtTokenProvider tokenProvider;
 
     @PostMapping("/signin")
-    public ResponseEntity<String> authenticatedUser(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<JWTAuthResponse> authenticatedUser(@RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getUsernameOrEmail(), loginDto.getPassword())
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("User signed-in successfully", HttpStatus.OK);
+        String token = tokenProvider.generateToken(authentication);
+
+        return ResponseEntity.ok(new JWTAuthResponse(token));
     }
 
     @PostMapping("/signup")
