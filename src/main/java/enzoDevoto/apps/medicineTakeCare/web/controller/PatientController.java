@@ -42,6 +42,7 @@ public class PatientController {
     ){
         return patientService.getPatients(pageNumber,pageSize, sortBy, sortDir);
     }
+
     @PreAuthorize(value = "hasRole('ADMIN')")
     @GetMapping({"/{patientId}"})
     @ResponseStatus(HttpStatus.OK)
@@ -49,6 +50,7 @@ public class PatientController {
         log.info("Getting a patient by UUID: ");
         return patientService.getPatientById(patientId);
     }
+
     @PreAuthorize(value = "hasRole('ADMIN')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -57,6 +59,7 @@ public class PatientController {
         return new ResponseEntity<>(patientService.saveNewPatient(patientDto), HttpStatus.CREATED);
 
     }
+
     @PreAuthorize(value = "hasRole('ADMIN')")
     @PatchMapping({"/updatePatient/{patientId}"})
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -65,6 +68,7 @@ public class PatientController {
         patientService.updatePatient(patientId, patientDto);
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
+
     @PreAuthorize(value = "hasRole('ADMIN')")
     @DeleteMapping({"/deletePatient/{patientId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -72,4 +76,5 @@ public class PatientController {
         log.info("Deleting a patient by UUID: ");
         patientService.deletePatient(patientId);
     }
+
 }
