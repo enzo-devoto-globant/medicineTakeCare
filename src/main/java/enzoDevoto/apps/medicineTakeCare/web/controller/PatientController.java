@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 
-@RequestMapping("/api/v1/patients")
+@RequestMapping("/api/patients")
 @RestController
 @Slf4j
 public class PatientController {
@@ -32,9 +32,9 @@ public class PatientController {
     public PatientController(PatientService patientService) {
         this.patientService = patientService;
     }
-    @GetMapping()
+    @GetMapping(produces = "application/vnd.enzoDevoto.apps.medicineTakeCare.v1+json")
     @ResponseStatus(HttpStatus.OK)
-    public PatientResponse getPatients(
+    public PatientResponse getPatientsV1(
             @RequestParam(value = "pageNo", defaultValue = PatientConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = PatientConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = PatientConstants.DEFAULT_SORT_BY, required = false) String sortBy,
@@ -44,17 +44,17 @@ public class PatientController {
     }
 
     @PreAuthorize(value = "hasRole('ADMIN')")
-    @GetMapping({"/{patientId}"})
+    @GetMapping(value = {"/{patientId}"}, produces = "application/vnd.enzoDevoto.apps.medicineTakeCare.v1+json")
     @ResponseStatus(HttpStatus.OK)
-    public PatientResponse getPatientById (@PathVariable("patientId") Long patientId){
+    public PatientResponse getPatientByIdV1 (@PathVariable("patientId") Long patientId){
         log.info("Getting a patient by UUID: ");
         return patientService.getPatientById(patientId);
     }
 
     @PreAuthorize(value = "hasRole('ADMIN')")
-    @PostMapping
+    @PostMapping(produces = "application/vnd.enzoDevoto.apps.medicineTakeCare.v1+json")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<PatientDto> saveNewPatient(@Valid @RequestBody  PatientDto patientDto){
+    public ResponseEntity<PatientDto> saveNewPatientV1(@Valid @RequestBody  PatientDto patientDto){
         log.info("Creating new Patient: " + patientDto);
         return new ResponseEntity<>(patientService.saveNewPatient(patientDto), HttpStatus.CREATED);
 
@@ -63,7 +63,7 @@ public class PatientController {
     @PreAuthorize(value = "hasRole('ADMIN')")
     @PatchMapping({"/updatePatient/{patientId}"})
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity updatePatient(@PathVariable("patientId")Long patientId,@Valid @RequestBody  PatientDto patientDto){
+    public ResponseEntity updatePatientV1(@PathVariable("patientId")Long patientId,@Valid @RequestBody  PatientDto patientDto){
         log.info("Updating a patient by id: " + patientId + " : " + patientDto);
         patientService.updatePatient(patientId, patientDto);
         return new ResponseEntity(HttpStatus.ACCEPTED);
@@ -72,7 +72,7 @@ public class PatientController {
     @PreAuthorize(value = "hasRole('ADMIN')")
     @DeleteMapping({"/deletePatient/{patientId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePatient(@PathVariable("patientId")Long patientId){
+    public void deletePatientV1(@PathVariable("patientId")Long patientId){
         log.info("Deleting a patient by UUID: ");
         patientService.deletePatient(patientId);
     }
