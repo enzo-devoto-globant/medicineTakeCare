@@ -34,7 +34,7 @@ public class DoctorController {
     }
 
     @GetMapping()
-    public DoctorResponse getDoctors(
+    public DoctorResponse getDoctorsV1(
             @RequestParam(value = "pageNo", defaultValue = PatientConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = PatientConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = PatientConstants.DEFAULT_SORT_BY, required = false) String sortBy,
@@ -42,17 +42,18 @@ public class DoctorController {
     ){
         return doctorService.getDoctors(pageNumber,pageSize, sortBy, sortDir);
     }
+
     @PreAuthorize(value = "hasRole('ADMIN')")
     @GetMapping({"/{doctorId}"})
     @ResponseStatus(HttpStatus.OK)
-    public DoctorResponse getDoctorById(@PathVariable("doctorId") Long doctorId){
+    public DoctorResponse getDoctorByIdV1(@PathVariable("doctorId") Long doctorId){
         log.info("Getting a doctor by ID: ");
         return doctorService.getDoctorById(doctorId);
     }
     @PreAuthorize(value = "hasRole('ADMIN')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<DoctorDto> saveNewDoctor(@Valid @RequestBody  DoctorDto doctorDto){
+    public ResponseEntity<DoctorDto> saveNewDoctorV1(@Valid @RequestBody  DoctorDto doctorDto){
         log.info("Creating new doctor: " + doctorDto);
         return new ResponseEntity<>(doctorService.setNewDoctorDto(doctorDto), HttpStatus.CREATED);
 
@@ -60,7 +61,7 @@ public class DoctorController {
     @PreAuthorize(value = "hasRole('ADMIN')")
     @PatchMapping({"/updateDoctor/{doctorId}"})
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity updateDoctor(@PathVariable("doctorId")Long doctorId, @Valid @RequestBody DoctorDto doctorDto){
+    public ResponseEntity updateDoctorV1(@PathVariable("doctorId")Long doctorId, @Valid @RequestBody DoctorDto doctorDto){
         log.info("Updating a doctor by id: " + doctorId + " : " + doctorDto);
         doctorService.updateDoctor(doctorId, doctorDto);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -68,7 +69,7 @@ public class DoctorController {
     @PreAuthorize(value = "hasRole('ADMIN')")
     @DeleteMapping({"/deleteDoctor/{doctorId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteDoctor(@PathVariable("doctorId")Long doctorId){
+    public void deleteDoctorV1(@PathVariable("doctorId")Long doctorId){
         log.info("Deleting a doctor by ID: ");
         doctorService.deleteDoctor(doctorId);
     }
