@@ -20,9 +20,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
     private CustomDoctorDetailsService customDoctorDetailsService;
-
     @Autowired
     private JwtAuthenticationEntryPoint authenticationEntryPoint;
 
@@ -30,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public JwtAuthenticationFilter jwtAuthenticationFilter(){
         return new JwtAuthenticationFilter();
     };
+
     @Bean
     PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -49,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/**").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/v3/api-docs/**").permitAll()
                 .anyRequest()
                 .authenticated();
 
