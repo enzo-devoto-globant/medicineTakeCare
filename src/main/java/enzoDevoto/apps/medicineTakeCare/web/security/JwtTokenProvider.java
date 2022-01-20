@@ -4,7 +4,6 @@ package enzoDevoto.apps.medicineTakeCare.web.security;
 import enzoDevoto.apps.medicineTakeCare.web.exception.MedicineTakeCareAPIException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -64,7 +63,7 @@ public class JwtTokenProvider {
         }catch (ExpiredJwtException exception) {
             throw new MedicineTakeCareAPIException(HttpStatus.BAD_REQUEST, "Expired JWT token");
         }catch (UnsupportedJwtException exception){
-            throw new MedicineTakeCareAPIException(HttpStatus.BAD_REQUEST, "Unsopported JWT token");
+            throw new MedicineTakeCareAPIException(HttpStatus.BAD_REQUEST, "Unsupported JWT token");
         }catch (IllegalArgumentException exception){
             throw new MedicineTakeCareAPIException(HttpStatus.BAD_REQUEST, "JWT claims string is empty");
         }

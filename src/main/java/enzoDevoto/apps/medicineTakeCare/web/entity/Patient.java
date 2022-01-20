@@ -1,7 +1,5 @@
 package enzoDevoto.apps.medicineTakeCare.web.entity;
 
-
-import enzoDevoto.apps.medicineTakeCare.web.model.DoctorDto;
 import enzoDevoto.apps.medicineTakeCare.web.model.PatientResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;

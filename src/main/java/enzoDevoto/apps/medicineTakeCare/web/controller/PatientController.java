@@ -32,6 +32,7 @@ public class PatientController {
     public PatientController(PatientService patientService) {
         this.patientService = patientService;
     }
+
     @GetMapping(produces = "application/vnd.enzoDevoto.apps.medicineTakeCare.v1+json")
     @ResponseStatus(HttpStatus.OK)
     public PatientResponse getPatientsV1(
