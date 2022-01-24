@@ -20,9 +20,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
     private CustomDoctorDetailsService customDoctorDetailsService;
-
     @Autowired
     private JwtAuthenticationEntryPoint authenticationEntryPoint;
 
@@ -30,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public JwtAuthenticationFilter jwtAuthenticationFilter(){
         return new JwtAuthenticationFilter();
     };
+
     @Bean
     PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -49,12 +50,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/**").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/v2/api-docs/**").permitAll()
+                .antMatchers("/swagger-ui/**").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("/webjars/**").permitAll()
                 .anyRequest()
                 .authenticated();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
-
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -71,4 +76,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
 }

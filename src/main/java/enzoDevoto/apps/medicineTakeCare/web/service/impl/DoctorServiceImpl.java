@@ -80,7 +80,7 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.setAge(doctorDto.getAge());
         doctor.setName(doctorDto.getName());
         doctor.setRate(doctorDto.getRate());
-        doctor.setSpeciality(doctorDto.getSpeciality());
+        doctor.setSpeciality(doctorDto.getSpecialtyArea());
         Doctor updatedDoctor = doctorRepository.save(doctor);
         return mapToDto(updatedDoctor);
     }

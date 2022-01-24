@@ -4,6 +4,9 @@ import enzoDevoto.apps.medicineTakeCare.web.model.DoctorDto;
 import enzoDevoto.apps.medicineTakeCare.web.model.DoctorResponse;
 import enzoDevoto.apps.medicineTakeCare.web.service.DoctorService;
 import enzoDevoto.apps.medicineTakeCare.web.utils.PatientConstants;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-
+@Api(value = "CRUD REST API fot Doctors resources")
 @RequestMapping("/api/v1/doctors")
 @RestController
 @Slf4j
@@ -32,7 +35,7 @@ public class DoctorController {
     public DoctorController(DoctorService doctorService) {
         this.doctorService = doctorService;
     }
-
+    @ApiOperation(value = "Get all Doctors users from Doctor REST API")
     @GetMapping()
     public DoctorResponse getDoctorsV1(
             @RequestParam(value = "pageNo", defaultValue = PatientConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNumber,
@@ -42,7 +45,7 @@ public class DoctorController {
     ){
         return doctorService.getDoctors(pageNumber,pageSize, sortBy, sortDir);
     }
-
+    @ApiOperation(value = "Get Doctor user by id from Doctor REST API")
     @PreAuthorize(value = "hasRole('ADMIN')")
     @GetMapping({"/{doctorId}"})
     @ResponseStatus(HttpStatus.OK)
@@ -50,6 +53,7 @@ public class DoctorController {
         log.info("Getting a doctor by ID: ");
         return doctorService.getDoctorById(doctorId);
     }
+    @ApiOperation(value = "Create a Doctor user for Doctor REST API")
     @PreAuthorize(value = "hasRole('ADMIN')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -58,6 +62,7 @@ public class DoctorController {
         return new ResponseEntity<>(doctorService.setNewDoctorDto(doctorDto), HttpStatus.CREATED);
 
     }
+    @ApiOperation(value = "Patch a Doctor user by id from Doctor REST API")
     @PreAuthorize(value = "hasRole('ADMIN')")
     @PatchMapping({"/updateDoctor/{doctorId}"})
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -66,6 +71,7 @@ public class DoctorController {
         doctorService.updateDoctor(doctorId, doctorDto);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
+    @ApiOperation(value = "Delete a Doctor user by Id from Doctor REST API")
     @PreAuthorize(value = "hasRole('ADMIN')")
     @DeleteMapping({"/deleteDoctor/{doctorId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
