@@ -8,6 +8,8 @@ import enzoDevoto.apps.medicineTakeCare.web.model.SignUpDto;
 import enzoDevoto.apps.medicineTakeCare.web.repository.DoctorRepository;
 import enzoDevoto.apps.medicineTakeCare.web.repository.RoleRepository;
 import enzoDevoto.apps.medicineTakeCare.web.security.JwtTokenProvider;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 
+@Api(value = "Auth controller exposes sign-in and sing-up REST API's")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -38,6 +41,7 @@ public class AuthController {
     @Autowired
     private JwtTokenProvider tokenProvider;
 
+    @ApiOperation(value = "REST API to register or sign-up user to MedicineTakeCare application.")
     @PostMapping("/signin")
     public ResponseEntity<JWTAuthResponse> authenticatedUser(@RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(
