@@ -164,7 +164,6 @@
 								</requiredJavaVersion>
 								<requireReleaseDeps>
 									<onlyWhenRealese>true</onlyWhenRealese>
-									<message>Realese builds must not have on snapshot dependecies</message>
 								</requireReleaseDeps>
 							</rules>
 						</configuration>
