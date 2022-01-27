@@ -95,6 +95,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<version>1.18.22</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -147,33 +148,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.0.0-M3</version>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>3.0.0-M3</version>
-				<executions>
-					<execution>
-						<id>enforce-version</id>
-						<goals>
-							<goal>enforce</goal>
-						</goals>
-						<configuration>
-							<rules>
-								<requireMavenVersion>
-									<version>[3.6.0,)</version>
-								</requireMavenVersion>
-								<requiredJavaVersion>
-									<version>[11,)</version>
-								</requiredJavaVersion>
-								<requireReleaseDeps>
-									<onlyWhenRealese>true</onlyWhenRealese>
-									<message>Realese builds must not have on snapshot dependecies</message>
-								</requireReleaseDeps>
-							</rules>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+
 		</plugins>
 	</build>
 
