@@ -11,6 +11,10 @@
 /Users/enzo.devoto/Desktop/MedicineTakeCareApp/medicineTakeCare/src/main/java/enzoDevoto/apps/medicineTakeCare/web/entity/Role.java
 /Users/enzo.devoto/Desktop/MedicineTakeCareApp/medicineTakeCare/src/main/java/enzoDevoto/apps/medicineTakeCare/web/model/RoleResponse.java
 /Users/enzo.devoto/Desktop/MedicineTakeCareApp/medicineTakeCare/src/main/java/enzoDevoto/apps/medicineTakeCare/web/service/DoctorService.java
+<<<<<<< HEAD
+=======
+/Users/enzo.devoto/Desktop/MedicineTakeCareApp/medicineTakeCare/src/main/java/enzoDevoto/apps/medicineTakeCare/web/config/SwaggerConfig.java
+>>>>>>> AWS-Beanstalk-deploy
 /Users/enzo.devoto/Desktop/MedicineTakeCareApp/medicineTakeCare/src/main/java/enzoDevoto/apps/medicineTakeCare/web/controller/PatientController.java
 /Users/enzo.devoto/Desktop/MedicineTakeCareApp/medicineTakeCare/src/main/java/enzoDevoto/apps/medicineTakeCare/web/entity/Patient.java
 /Users/enzo.devoto/Desktop/MedicineTakeCareApp/medicineTakeCare/src/main/java/enzoDevoto/apps/medicineTakeCare/MedicineTakeCareApplication.java

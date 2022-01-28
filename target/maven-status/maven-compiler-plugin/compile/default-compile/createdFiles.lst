@@ -18,6 +18,10 @@ enzoDevoto/apps/medicineTakeCare/web/model/PatientDto$PatientDtoBuilderImpl.clas
 enzoDevoto/apps/medicineTakeCare/web/model/PatientDto$PatientDtoBuilder.class
 enzoDevoto/apps/medicineTakeCare/web/repository/PatientRepository.class
 enzoDevoto/apps/medicineTakeCare/web/model/ErrorDetails.class
+<<<<<<< HEAD
+=======
+enzoDevoto/apps/medicineTakeCare/web/config/SwaggerConfig.class
+>>>>>>> AWS-Beanstalk-deploy
 enzoDevoto/apps/medicineTakeCare/web/security/CustomDoctorDetailsService.class
 enzoDevoto/apps/medicineTakeCare/web/security/JwtAuthenticationEntryPoint.class
 enzoDevoto/apps/medicineTakeCare/web/model/PatientDto.class
